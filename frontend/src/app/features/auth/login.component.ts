@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login', standalone: true,
-  imports: [ReactiveFormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule],
   template: `
     <main class="login-page">
       <mat-card class="login-card">
@@ -23,6 +24,7 @@ import { AuthService } from '../../core/services/auth.service';
           @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
           <button mat-flat-button color="primary" class="submit-button" type="submit" [disabled]="form.invalid || loading">{{ loading ? 'Signing in…' : 'Sign in' }}</button>
         </form>
+        <p class="footer-link">New here? <a routerLink="/register">Create an account</a></p>
       </mat-card>
     </main>
   `,
@@ -34,6 +36,7 @@ import { AuthService } from '../../core/services/auth.service';
     h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; } .subheading { margin: 8px 0 28px; color: #74798a; }
     form { display: grid; gap: 4px; } mat-form-field { width: 100%; } .submit-button { height: 48px; border-radius: 10px; margin-top: 6px; }
     .error-message { color: #b3261e; font-size: 13px; margin: 0 0 8px; }
+    .footer-link { margin: 22px 0 0; text-align: center; color: #74798a; font-size: 13px; } .footer-link a { color: #5148cf; font-weight: 600; text-decoration: none; }
     @media (max-width: 480px) { .login-card { padding: 28px 22px; } }
   `]
 })
@@ -41,7 +44,6 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   readonly form = this.fb.nonNullable.group({ email: ['', [Validators.required, Validators.email]], password: ['', Validators.required] });
   loading = false;
   errorMessage = '';
@@ -51,7 +53,7 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = '';
     this.auth.login(this.form.getRawValue()).subscribe({
-      next: () => { this.loading = false; void this.router.navigateByUrl(this.route.snapshot.queryParamMap.get('returnUrl') || '/tasks'); },
+      next: () => { this.loading = false; void this.router.navigateByUrl('/tasks'); },
       error: () => { this.loading = false; this.errorMessage = 'We could not sign you in. Check your details and try again.'; }
     });
   }

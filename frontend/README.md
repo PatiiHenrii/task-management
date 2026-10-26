@@ -11,7 +11,7 @@ npm install
 npm start
 ```
 
-The development server starts at `http://localhost:4200` and expects the API at `http://localhost:8080`. The API must allow the frontend origin through its CORS configuration.
+The development server starts at `http://localhost:4200`. Its proxy forwards `/api` requests to `http://localhost:8080`, avoiding browser CORS checks during local development. Set the backend's `CORS_ALLOWED_ORIGINS` environment variable to the deployed frontend origin(s), separated by commas, when calling the API directly from a browser in another environment.
 
 ## Structure
 
@@ -28,4 +28,4 @@ src/app/
     └── components/
 ```
 
-Angular Material 17 is listed in `package.json`; the global Material light theme is configured in `src/styles.scss`. Routes are declared in `src/app/app-routing.module.ts`; `/tasks` is protected by the functional auth guard.
+Angular Material 17 is listed in `package.json`; the global Material light theme is configured in `src/styles.scss`. Routes are declared in `src/app/app-routing.module.ts`; `/tasks` is protected by the functional auth guard. Login and account registration use the backend endpoints at `/api/auth/login` and `/api/auth/register`.

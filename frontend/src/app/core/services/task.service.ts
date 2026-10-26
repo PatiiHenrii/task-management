@@ -16,7 +16,7 @@ export interface TaskInput { title: string; description: string; status: string;
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/tasks';
+  private readonly apiUrl = '/api/tasks';
 
   list(): Observable<TaskItem[]> { return this.http.get<TaskItem[]>(this.apiUrl); }
   create(task: TaskInput): Observable<TaskItem> { return this.http.post<TaskItem>(this.apiUrl, task); }
