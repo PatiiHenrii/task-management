@@ -17,5 +17,21 @@ services:
       timeout: 5s
       retries: 10
 
+  app:
+    build: .
+    container_name: task-management-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/taskmanager
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: ${JWT_SECRET:-VGhpc0lzQUxvY2FsRGV2ZWxvcG1lbnRTZWNyZXRLZXlGb3JKV1Q=}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
+    ports:
+      - "8080:8080"
+
 volumes:
   postgres_data:
