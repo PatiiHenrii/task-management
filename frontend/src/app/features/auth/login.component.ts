@@ -11,34 +11,8 @@ import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-login', standalone: true,
   imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule],
-  template: `
-    <main class="login-page">
-      <mat-card class="login-card">
-        <div class="brand-mark" aria-hidden="true">✓</div>
-        <p class="eyebrow">TASK MANAGEMENT</p>
-        <h1>Welcome back</h1>
-        <p class="subheading">Sign in to pick up where you left off.</p>
-        <form [formGroup]="form" (ngSubmit)="submit()">
-          <mat-form-field appearance="outline"><mat-label>Email address</mat-label><input matInput type="email" formControlName="email" autocomplete="username"><mat-error>Enter a valid email address.</mat-error></mat-form-field>
-          <mat-form-field appearance="outline"><mat-label>Password</mat-label><input matInput type="password" formControlName="password" autocomplete="current-password"><mat-error>Password is required.</mat-error></mat-form-field>
-          @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
-          <button mat-flat-button color="primary" class="submit-button" type="submit" [disabled]="form.invalid || loading">{{ loading ? 'Signing in…' : 'Sign in' }}</button>
-        </form>
-        <p class="footer-link">New here? <a routerLink="/register">Create an account</a></p>
-      </mat-card>
-    </main>
-  `,
-  styles: [`
-    .login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(ellipse at 50% 0%, #e8eaff 0, #f7f8fc 56%); }
-    .login-card { width: min(100%, 420px); box-sizing: border-box; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px #26345d14; }
-    .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: #5148cf; color: white; font-size: 22px; font-weight: 700; }
-    .eyebrow { margin: 24px 0 8px; color: #6258c9; font-size: 11px; font-weight: 700; letter-spacing: .14em; }
-    h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; } .subheading { margin: 8px 0 28px; color: #74798a; }
-    form { display: grid; gap: 4px; } mat-form-field { width: 100%; } .submit-button { height: 48px; border-radius: 10px; margin-top: 6px; }
-    .error-message { color: #b3261e; font-size: 13px; margin: 0 0 8px; }
-    .footer-link { margin: 22px 0 0; text-align: center; color: #74798a; font-size: 13px; } .footer-link a { color: #5148cf; font-weight: 600; text-decoration: none; }
-    @media (max-width: 480px) { .login-card { padding: 28px 22px; } }
-  `]
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);

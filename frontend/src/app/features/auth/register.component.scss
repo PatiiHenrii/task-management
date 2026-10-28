@@ -1,0 +1,10 @@
+    .register-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(ellipse at 50% 0%, #e8eaff 0, #f7f8fc 56%); }
+    .register-card { width: min(100%, 440px); box-sizing: border-box; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px #26345d14; }
+    .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: #5148cf; color: white; font-size: 22px; font-weight: 700; }
+    .eyebrow { margin: 24px 0 8px; color: #6258c9; font-size: 11px; font-weight: 700; letter-spacing: .14em; }
+    h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; } .subheading { margin: 8px 0 28px; color: #74798a; }
+    form { display: grid; gap: 4px; } mat-form-field { width: 100%; } .submit-button { height: 48px; border-radius: 10px; margin-top: 6px; }
+    .error-message { color: #b3261e; font-size: 13px; margin: 0 0 8px; }
+    .footer-link { margin: 22px 0 0; text-align: center; color: #74798a; font-size: 13px; } .footer-link a { color: #5148cf; font-weight: 600; text-decoration: none; }
+    @media (max-width: 480px) { .register-card { padding: 28px 22px; } }
+  

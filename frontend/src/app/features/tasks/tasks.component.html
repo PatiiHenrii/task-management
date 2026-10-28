@@ -1,0 +1,65 @@
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="wordmark" routerLink="/tasks"><app-brand-mark /> taskly</a>
+        <button mat-button type="button" (click)="logout()">Sign out</button>
+      </header>
+
+      <main class="content">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">YOUR WORKSPACE</p>
+            <h1>My tasks</h1>
+            <p class="subheading">A little progress adds up.</p>
+          </div>
+          <button mat-flat-button color="primary" class="new-task-button" type="button" (click)="openCreateDialog()">
+            <mat-icon>add</mat-icon> New task
+          </button>
+        </div>
+
+        <div class="list-toolbar">
+          <span class="task-count">{{ filteredTasks.length }} {{ filteredTasks.length === 1 ? 'task' : 'tasks' }}</span>
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Filter by status</mat-label>
+            <mat-select [value]="statusFilter" (selectionChange)="statusFilter = $event.value">
+              <mat-option value="ALL">All statuses</mat-option>
+              <mat-option value="TODO">To do</mat-option>
+              <mat-option value="IN_PROGRESS">In progress</mat-option>
+              <mat-option value="DONE">Done</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
+        @if (loading) {
+          <p class="loading-state">Loading tasks…</p>
+        } @else {
+          <section class="task-list" aria-label="Tasks">
+            @for (task of filteredTasks; track task.id) {
+              <mat-card class="task-card">
+                <div class="task-content">
+                  <div class="task-title-row">
+                    <h2>{{ task.title }}</h2>
+                    <span class="status-badge" [class.todo]="task.status === 'TODO'" [class.in-progress]="task.status === 'IN_PROGRESS'" [class.done]="task.status === 'DONE'">
+                      {{ statusLabel(task.status) }}
+                    </span>
+                  </div>
+                  @if (task.description) { <p class="description">{{ task.description }}</p> }
+                  @if (task.dueDate) { <p class="due-date"><mat-icon>event</mat-icon> Due {{ task.dueDate | date:'mediumDate' }}</p> }
+                </div>
+                <div class="task-actions">
+                  <button mat-icon-button type="button" aria-label="Edit task" (click)="openEditDialog(task)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button type="button" aria-label="Delete task" (click)="confirmDelete(task)"><mat-icon>delete_outline</mat-icon></button>
+                </div>
+              </mat-card>
+            } @empty {
+              <div class="empty-state">
+                <div class="empty-icon">✦</div>
+                <h2>{{ statusFilter === 'ALL' ? 'Nothing on your list yet' : 'No tasks in this status' }}</h2>
+                <p>{{ statusFilter === 'ALL' ? 'Create your first task to get started.' : 'Try another status filter or create a new task.' }}</p>
+              </div>
+            }
+          </section>
+        }
+      </main>
+    </div>
+  

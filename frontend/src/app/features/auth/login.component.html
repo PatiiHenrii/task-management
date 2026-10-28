@@ -1,0 +1,16 @@
+    <main class="login-page">
+      <mat-card class="login-card">
+        <div class="brand-mark" aria-hidden="true">✓</div>
+        <p class="eyebrow">TASK MANAGEMENT</p>
+        <h1>Welcome back</h1>
+        <p class="subheading">Sign in to pick up where you left off.</p>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <mat-form-field appearance="outline"><mat-label>Email address</mat-label><input matInput type="email" formControlName="email" autocomplete="username"><mat-error>Enter a valid email address.</mat-error></mat-form-field>
+          <mat-form-field appearance="outline"><mat-label>Password</mat-label><input matInput type="password" formControlName="password" autocomplete="current-password"><mat-error>Password is required.</mat-error></mat-form-field>
+          @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
+          <button mat-flat-button color="primary" class="submit-button" type="submit" [disabled]="form.invalid || loading">{{ loading ? 'Signing in…' : 'Sign in' }}</button>
+        </form>
+        <p class="footer-link">New here? <a routerLink="/register">Create an account</a></p>
+      </mat-card>
+    </main>
+  
