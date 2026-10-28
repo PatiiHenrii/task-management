@@ -11,6 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - task-management-net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d taskmanager"]
       interval: 5s
@@ -18,7 +20,9 @@ services:
       retries: 10
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: task-management-api
     restart: unless-stopped
     depends_on:
@@ -28,10 +32,30 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/taskmanager
       DB_USER: postgres
       DB_PASSWORD: postgres
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:4200,http://127.0.0.1:4200}
       JWT_SECRET: ${JWT_SECRET:-VGhpc0lzQUxvY2FsRGV2ZWxvcG1lbnRTZWNyZXRLZXlGb3JKV1Q=}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
     ports:
       - "8080:8080"
+    networks:
+      - task-management-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: task-management-frontend
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "4200:80"
+    networks:
+      - task-management-net
 
 volumes:
   postgres_data:
+
+networks:
+  task-management-net:
+    driver: bridge

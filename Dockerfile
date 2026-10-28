@@ -4,7 +4,7 @@ WORKDIR /workspace
 COPY . .
 RUN chmod +x gradlew && ./gradlew --no-daemon clean bootJar
 
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jre AS runtime
 
 WORKDIR /app
 COPY --from=build /workspace/build/libs/task-management-0.0.1-SNAPSHOT.jar app.jar

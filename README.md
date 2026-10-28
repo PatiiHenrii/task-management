@@ -188,7 +188,7 @@ The repository currently uses Gradle and does not include Maven metadata, so `mv
 
 ## Docker
 
-The multi-stage `Dockerfile` builds the Spring Boot executable JAR and runs it on a Java 17 JRE. `docker-compose.yml` starts PostgreSQL and the API, waits for the database health check, and exposes the API on port `8080`.
+The multi-stage `Dockerfile` builds the Spring Boot executable JAR with the Gradle Wrapper and runs it on a Java 17 JRE. `frontend/Dockerfile` builds the Angular app with Node.js and serves it with Nginx. Nginx forwards `/api` calls to the backend, so the browser uses one origin and avoids CORS during local development. `docker-compose.yml` starts PostgreSQL, the API, and the frontend; the API waits for the database health check.
 
 Build and start the full local stack:
 
@@ -196,6 +196,8 @@ Build and start the full local stack:
 export JWT_SECRET="$(openssl rand -base64 32)"
 docker compose up --build -d
 ```
+
+Open the frontend at `http://localhost:4200`. The API is also available directly at `http://localhost:8080`.
 
 View application logs or stop the services:
 
